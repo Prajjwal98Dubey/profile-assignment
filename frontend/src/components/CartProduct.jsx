@@ -11,6 +11,7 @@ import {
   removeFromCart,
 } from "../helpers/CartMethods";
 import { CachedCartContext } from "../contexts/CachedCartContext";
+import { toast } from "react-toastify";
 
 /* eslint-disable react/prop-types */
 const CartProduct = ({ itemId, itemQuantity }) => {
@@ -26,6 +27,12 @@ const CartProduct = ({ itemId, itemQuantity }) => {
       .then((res) => res.json())
       .then((data) => setItem(data));
     setIsLoading(false);
+  };
+  const toastRemoveFromCart = () => {
+    toast(`${item.title} removed !!!`, {
+      position: "top-center",
+      autoClose: 1500,
+    });
   };
   return (
     <>
@@ -67,15 +74,16 @@ const CartProduct = ({ itemId, itemQuantity }) => {
                 <div></div>
                 <div
                   className="flex justify-start p-1 hover:bg-[#4a4848] cursor-pointer w-fit rounded-md"
-                  onClick={() =>
+                  onClick={() => {
                     removeFromCart(
                       item,
                       cartItems,
                       setCartItems,
                       cachedCartItem,
                       setCachedCartItem
-                    )
-                  }
+                    );
+                    toastRemoveFromCart();
+                  }}
                 >
                   <img
                     src={TRASH_ICON}
