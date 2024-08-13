@@ -1,16 +1,26 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { discountedPrice } from "../helpers/discountedPrice";
 import { SINGLE_PRODUCT_API } from "../APIS/products.api";
 import { TRASH_ICON } from "../assets/icons";
+import { CartContext } from "../contexts/CartContext";
+import {
+  calculateProductSubtotal,
+  handleAddToCart,
+  handleDecrementQuantity,
+  removeFromCart,
+} from "../helpers/CartMethods";
+import { CachedCartContext } from "../contexts/CachedCartContext";
 
 /* eslint-disable react/prop-types */
-const CartProduct = ({ itemId,itemQuantity }) => {
+const CartProduct = ({ itemId, itemQuantity }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [item, setItem] = useState({});
+  const { cartItems, setCartItems } = useContext(CartContext);
+  const { cachedCartItem, setCachedCartItem } = useContext(CachedCartContext);
   useEffect(() => {
     itemDetail();
-  },[]);
+  }, []);
   const itemDetail = async () => {
     await fetch(SINGLE_PRODUCT_API + `${itemId}`)
       .then((res) => res.json())
@@ -39,13 +49,15 @@ const CartProduct = ({ itemId,itemQuantity }) => {
                   <div className="flex justify-center font-semibold text-gray-300">
                     <span className="text-[15px] flex justify-center items-center m-[2px] font-extrabold">
                       ₹
-                      {Math.round(
+                      {(
                         discountedPrice(item.price, item.discountPercentage) *
-                          83
-                      ).toLocaleString()}
+                        83
+                      )
+                        .toFixed(2)
+                        .toLocaleString()}
                     </span>
                     <span className="text-[15px] flex justify-center items-center text-gray-400 line-through m-[2px]">
-                      ₹{Math.round(item.price * 83).toLocaleString()}
+                      ₹{(item.price * 83).toFixed(2).toLocaleString()}
                     </span>
                     <span className="text-[15px] flex justify-center items-center text-green-400 m-[2px]">
                       {item.discountPercentage}% off
@@ -53,17 +65,77 @@ const CartProduct = ({ itemId,itemQuantity }) => {
                   </div>
                 </div>
                 <div></div>
-            <div className="flex justify-start p-1 hover:bg-[#4a4848] cursor-pointer w-fit rounded-md">
-                      <img src={TRASH_ICON} alt="loading" loading="lazy" className="w-[16px] h-[18px]" />
-            </div>
+                <div
+                  className="flex justify-start p-1 hover:bg-[#4a4848] cursor-pointer w-fit rounded-md"
+                  onClick={() =>
+                    removeFromCart(
+                      item,
+                      cartItems,
+                      setCartItems,
+                      cachedCartItem,
+                      setCachedCartItem
+                    )
+                  }
+                >
+                  <img
+                    src={TRASH_ICON}
+                    alt="loading"
+                    loading="lazy"
+                    className="w-[16px] h-[18px]"
+                  />
+                </div>
               </div>
             </div>
             <div className="w-[300px] flex justify-start">
-            <div className="flex  items-center ">
-                <div className="border border-gray-400"><button className="text-[5xl] font-semibold w-[50px] flex justify-center items-center hover:bg-[#423d3d]">-</button></div>
-                <div className="w-[50px] border border-gray-400 flex justify-center items-center">{itemQuantity}</div>
-                <div className="border border-gray-400"><button className="text-[5xl] font-semibold w-[50px] flex justify-center items-center hover:bg-[#423d3d]">+</button></div>
+              <div className="flex  items-center ">
+                <div className="border border-gray-400">
+                  <button
+                    className="text-[5xl] font-semibold w-[50px] flex justify-center items-center hover:bg-[#423d3d]"
+                    onClick={() =>
+                      handleDecrementQuantity(
+                        item,
+                        cartItems,
+                        setCartItems,
+                        cachedCartItem,
+                        setCachedCartItem
+                      )
+                    }
+                  >
+                    -
+                  </button>
+                </div>
+                <div className="w-[50px] border border-gray-400 flex justify-center items-center">
+                  {itemQuantity}
+                </div>
+                <div className="border border-gray-400">
+                  <button
+                    className="text-[5xl] font-semibold w-[50px] flex justify-center items-center hover:bg-[#423d3d]"
+                    onClick={() =>
+                      handleAddToCart(
+                        item,
+                        cartItems,
+                        setCartItems,
+                        cachedCartItem,
+                        setCachedCartItem
+                      )
+                    }
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
             </div>
+            <div className="w-[200px] flex justify-center items-center font-bold">
+              ₹
+              {(
+                calculateProductSubtotal(
+                  item.price,
+                  item.discountPercentage,
+                  itemQuantity
+                ) * 83
+              )
+                .toFixed(2)
+                .toLocaleString()}
             </div>
           </div>
         </div>
