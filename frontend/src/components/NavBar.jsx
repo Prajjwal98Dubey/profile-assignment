@@ -6,9 +6,9 @@ import { CartContext } from "../contexts/CartContext";
 const NavBar = () => {
   const { cartItems } = useContext(CartContext);
   return (
-    <div className="h-[58px] rounded-md bg-blue-600 flex justify-center items-center mb-2 sticky top-0">
+    <div className="h-[58px] rounded-md bg-purple-600 flex justify-center items-center mb-2 sticky top-0">
       <Link to="/cart">
-        <div className="flex justify-center p-2 cursor-pointer hover:bg-blue-700 rounded-md relative">
+        <div className="flex justify-center p-2 cursor-pointer hover:bg-purple-700 rounded-md relative">
           <img
             src={CART_ICON}
             alt="loading"

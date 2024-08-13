@@ -18,7 +18,7 @@ const Product = ({ prod }) => {
     })
   };
   return (
-    <div className="w-[320px] h-[250px] border border-purple-600 rounded-md">
+    <div className="w-[320px] h-[250px] rounded-md hover:bg-[#4b4949]">
       <div>
         <img
           src={prod.thumbnail}
