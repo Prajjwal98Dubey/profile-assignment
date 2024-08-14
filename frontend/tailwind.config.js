@@ -8,9 +8,13 @@ export default {
     extend: {
       fontFamily:{
         'Rubrik':["Rubik", "sans-serif"]
+      },
+      screens:{
+        'xsm':'100px'
       }
     },
   },
   plugins: [],
 }
+
 
