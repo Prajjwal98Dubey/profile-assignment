@@ -17,13 +17,15 @@ const Cart = () => {
             no items added...
           </div>
         ) : (
-          cartItems.map((item) => (
-            <CartProduct
-              key={item.id}
-              itemId={item.id}
-              itemQuantity={item.quantity}
-            />
-          ))
+          <div className="mb-12">
+            {cartItems.map((item) => (
+              <CartProduct
+                key={item.id}
+                itemId={item.id}
+                itemQuantity={item.quantity}
+              />
+            ))}
+          </div>
         )}
       </div>
       <CartFooter />
