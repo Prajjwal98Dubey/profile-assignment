@@ -36,9 +36,7 @@ const CartProduct = ({ itemId, itemQuantity }) => {
   };
   return (
     <>
-      {isLoading ? (
-        <div className="flex justify-center items-center p-2">Loading...</div>
-      ) : (
+      {!isLoading &&
         <div className="w-full flex justify-center mb-2 mt-2">
           <div className="w-[80%] rounded-md border border-gray-300 flex justify-center ">
             <div className="flex justify-center items-center w-[20%]">
@@ -145,7 +143,7 @@ const CartProduct = ({ itemId, itemQuantity }) => {
             </div>
           </div>
         </div>
-      )}
+      }
     </>
   );
 };

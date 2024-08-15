@@ -4,12 +4,15 @@ import App from "./App.jsx";
 import "./index.css";
 import CartContextProvider from "./contexts/CartContextProvider.jsx";
 import CachedCartProvider from "./contexts/CachedCartProvider.jsx";
+import CachedProductsProvider from "./contexts/CachedProductsProvider.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <CachedCartProvider>
-      <CartContextProvider>
+    <CachedProductsProvider>
+      <CachedCartProvider>
+        <CartContextProvider>
           <App />
-      </CartContextProvider>
-    </CachedCartProvider>
+        </CartContextProvider>
+      </CachedCartProvider>
+    </CachedProductsProvider>
   </StrictMode>
 );
