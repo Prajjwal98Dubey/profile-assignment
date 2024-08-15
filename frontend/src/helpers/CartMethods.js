@@ -74,7 +74,7 @@ export const removeFromCart = (
 };
 
 export const calculateProductSubtotal = (price, discount, quantity) => {
-  let priceAfterDiscount = discountedPrice(price, discount);
+  let priceAfterDiscount = parseFloat(discountedPrice(price, discount));
   return priceAfterDiscount * quantity;
 };
 

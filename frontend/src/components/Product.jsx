@@ -12,10 +12,10 @@ const Product = ({ prod }) => {
   const { cartItems, setCartItems } = useContext(CartContext);
   const { cachedCartItem, setCachedCartItem } = useContext(CachedCartContext);
   const toastAddToCart = () => {
-    toast(`${prod.title} added !!!`,{
-      position:'top-center',
-      autoClose:1500
-    })
+    toast(`${prod.title} added !!!`, {
+      position: "bottom-left",
+      autoClose: 1500,
+    });
   };
   return (
     <div className="w-[320px] h-[250px] rounded-md hover:bg-[#4b4949]">
@@ -31,12 +31,12 @@ const Product = ({ prod }) => {
       <div className="flex justify-center font-semibold text-gray-300">
         <span className="text-[15px] flex justify-center items-center m-[2px] font-extrabold">
           ₹
-          {(discountedPrice(prod.price, prod.discountPercentage) * 83)
-            .toFixed(2)
-            .toLocaleString()}
+          {parseFloat(
+            discountedPrice(prod.price, prod.discountPercentage)
+          ).toLocaleString()}
         </span>
         <span className="text-[15px] flex justify-center items-center text-gray-400 line-through m-[2px]">
-          ₹{(prod.price * 83).toFixed(2).toLocaleString()}
+          ₹{parseFloat((prod.price * 83).toFixed(2)).toLocaleString()}
         </span>
         <span className="text-[15px] flex justify-center items-center text-green-400 m-[2px]">
           {prod.discountPercentage}% off

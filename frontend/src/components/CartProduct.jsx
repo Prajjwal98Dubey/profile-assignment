@@ -30,13 +30,13 @@ const CartProduct = ({ itemId, itemQuantity }) => {
   };
   const toastRemoveFromCart = () => {
     toast(`${item.title} removed !!!`, {
-      position: "top-center",
+      position: "bottom-left",
       autoClose: 1500,
     });
   };
   return (
     <>
-      {!isLoading &&
+      {!isLoading && (
         <div className="w-full flex justify-center mb-2 mt-2">
           <div className="w-[80%] rounded-md border border-gray-300 flex justify-center ">
             <div className="flex justify-center items-center w-[20%]">
@@ -49,25 +49,28 @@ const CartProduct = ({ itemId, itemQuantity }) => {
             </div>
             <div className="flex justify-start items-center m-1 w-[35%] h-full">
               <div>
-                <div className="font-bold flex justify-start w-full max-h-fit lg:text-[20px] md:text-[15px] xsm:text-[8px]">{item.title}</div>
+                <div className="font-bold flex justify-start w-full max-h-fit lg:text-[20px] md:text-[15px] xsm:text-[8px]">
+                  {item.title}
+                </div>
                 <div className="flex justify-start">
                   <div className="flex justify-start font-semibold text-gray-300 w-full">
                     <span className="flex justify-center items-center lg:mr-[6px] md:mr-[4px] xsm:mr-[2px] font-extrabold lg:text-[16px] md:text-[12px] xsm:text-[7px]">
                       ₹
-                      {(
-                        discountedPrice(item.price, item.discountPercentage) *
-                        83
-                      )
-                        .toFixed(2)
-                        .toLocaleString()}
+                      {parseFloat(
+                        discountedPrice(item.price, item.discountPercentage)
+                      ).toLocaleString()}
                     </span>
                     <span className=" lg:text-[16px] md:text-[12px] xsm:text-[7px] flex justify-center items-center text-gray-400 line-through ">
-                      ₹{(item.price * 83).toFixed(2).toLocaleString()}
+                      ₹
+                      {parseFloat(
+                        (item.price * 83).toFixed(2)
+                      ).toLocaleString()}
                     </span>
-                  
                   </div>
                 </div>
-                <div className="text-green-500 lg:[16px] md:text-[12px] xsm:text-[7px] font-bold flex justify-start">{item.discountPercentage}% off</div>
+                <div className="text-green-500 lg:[16px] md:text-[12px] xsm:text-[7px] font-bold flex justify-start">
+                  {item.discountPercentage}% off
+                </div>
                 <div
                   className="flex justify-start  p-1 hover:bg-[#4a4848] cursor-pointer w-fit rounded-md"
                   onClick={() => {
@@ -131,19 +134,15 @@ const CartProduct = ({ itemId, itemQuantity }) => {
             </div>
             <div className="w-[30%] flex justify-center items-center font-bold lg:text-[20px] md:text-[15px] xsm:text-[8px]">
               ₹
-              {(
-                calculateProductSubtotal(
-                  item.price,
-                  item.discountPercentage,
-                  itemQuantity
-                ) * 83
-              )
-                .toFixed(2)
-                .toLocaleString()}
+              {calculateProductSubtotal(
+                item.price,
+                item.discountPercentage,
+                itemQuantity
+              ).toLocaleString()}
             </div>
           </div>
         </div>
-      }
+      )}
     </>
   );
 };
