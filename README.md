@@ -1,5 +1,6 @@
 <h1>E-Commerce Web Application</h1>
-[see it in action](https://66bdd7b70d0bf5ac3154d7d0--tiny-marzipan-1e1240.netlify.app/)
+https://66bdd7b70d0bf5ac3154d7d0--tiny-marzipan-1e1240.netlify.app
+<br/>
 <i>only frontend part is deployed.</i>
 <ul>
   <h2>Features</h2>
