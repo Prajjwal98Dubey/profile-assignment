@@ -1,11 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { lazy, Suspense, useContext, useEffect, useState } from "react";
 import { PRODUCTS_API } from "../APIS/products.api";
 import { SPINNER_ICON } from "../assets/icons";
-import Product from "../components/Product";
-import NavBar from "../components/NavBar";
-import BackToHome from "../components/BackToHome";
+
+const Product = lazy(() => import("../components/Product"));
+const NavBar = lazy(() => import("../components/NavBar"));
+const BackToHome = lazy(() => import("../components/BackToHome"));
+
 import { Link } from "react-router-dom";
 import { CachedProductsContext } from "../contexts/CachedProductsContext";
+import ProductShimmer from "../shimmers/ProductShimmer";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -47,7 +50,9 @@ const Home = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {products.map((prod) => (
-              <Product key={prod.id} prod={prod} />
+              <Suspense key={prod.id} fallback={<ProductShimmer />}>
+                <Product prod={prod} />
+              </Suspense>
             ))}
           </div>
         )}

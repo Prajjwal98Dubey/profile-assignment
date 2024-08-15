@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-
 import { discountedPrice } from "../helpers/discountedPrice";
-import { SINGLE_PRODUCT_API } from "../APIS/products.api";
 import { TRASH_ICON } from "../assets/icons";
 import { CartContext } from "../contexts/CartContext";
 import {
@@ -14,7 +12,7 @@ import { CachedCartContext } from "../contexts/CachedCartContext";
 import { toast } from "react-toastify";
 
 /* eslint-disable react/prop-types */
-const CartProduct = ({ itemId, itemQuantity }) => {
+const CartProduct = ({ itemQuantity,cachedItem }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [item, setItem] = useState({});
   const { cartItems, setCartItems } = useContext(CartContext);
@@ -22,11 +20,9 @@ const CartProduct = ({ itemId, itemQuantity }) => {
   useEffect(() => {
     itemDetail();
   }, []);
-  const itemDetail = async () => {
-    await fetch(SINGLE_PRODUCT_API + `${itemId}`)
-      .then((res) => res.json())
-      .then((data) => setItem(data));
-    setIsLoading(false);
+  const itemDetail = () => {
+    setItem(cachedItem)
+    setIsLoading(false)
   };
   const toastRemoveFromCart = () => {
     toast(`${item.title} removed !!!`, {
