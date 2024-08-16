@@ -12,5 +12,4 @@ https://66bdd7b70d0bf5ac3154d7d0--tiny-marzipan-1e1240.netlify.app
   <h2>Contexts (state Management) </h2>
   <li>"CachedProductsContext" - it is used to store(cached) the products.</li>
   <li>"CachedCartContext" - it is used to store(cached) the cart items.</li>
-  <li>"CartContext" (present in repo but not using it,CachedCartContext is being used for storing the cart items) - it is added with the thought that, this context will have (productId,quantityOfProduct) as the parameters and every time one goes to the cart page their is an API call based on the productId, so that if there is some updates in the product details which the user has added in their cart, it will reflect the latest details of that. </li>
 </ul>
