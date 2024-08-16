@@ -4,6 +4,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HomeShimmer from "./shimmers/HomeShimmer";
 import CartShimmer from "./shimmers/CartShimmer";
+import Register from "./components/Register";
+import Login from "./components/Login";
 const Home = lazy(() => import("./pages/Home"));
 const Cart = lazy(() => import("./pages/Cart"));
 function App() {
@@ -32,6 +34,14 @@ const appRouter = createBrowserRouter([
       </Suspense>
     ),
   },
+  {
+    path: "/auth/register",
+    element: <Register />,
+  },
+  {
+    path:"/auth/login",
+    element:<Login/>
+  }
 ]);
 
 export default App;

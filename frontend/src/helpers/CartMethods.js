@@ -1,76 +1,116 @@
+import axios from "axios";
+import {
+  ADD_TO_CART_API,
+  DECREMENT_QUANTITY_CART_API,
+  REMOVE_FROM_CART_API,
+} from "../APIS/backend.api";
 import { discountedPrice } from "./discountedPrice";
 
-export const handleAddToCart = (
+export const handleAddToCart = async (
   selectedProduct,
-  cartItems,
-  setCartItems,
   cachedCartItem,
   setCachedCartItem
 ) => {
   let currProductIndex = -1;
-  for (let i = 0; i < cartItems.length; i++) {
-    if (selectedProduct.id === cartItems[i].id) {
+  for (let i = 0; i < cachedCartItem.length; i++) {
+    if (selectedProduct.id === cachedCartItem[i].id) {
       currProductIndex = i;
       break;
     }
   }
   if (currProductIndex != -1) {
-    cartItems[currProductIndex].quantity += 1;
     cachedCartItem[currProductIndex].quantity += 1;
-    setCartItems([...cartItems]);
+
     setCachedCartItem([...cachedCartItem]);
   } else {
-    setCartItems([{ id: selectedProduct.id, quantity: 1 }, ...cartItems]);
     let modifiedProduct = { ...selectedProduct, quantity: 1 };
     setCachedCartItem([modifiedProduct, ...cachedCartItem]);
   }
+  if (localStorage.getItem("e-comm-auth")) {
+    await axios.post(
+      ADD_TO_CART_API,
+      {
+        prodId: selectedProduct.id,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("e-comm-auth")).token
+          }`,
+        },
+      }
+    );
+  }
 };
 
-export const handleDecrementQuantity = (
+export const handleDecrementQuantity = async (
   selectedProduct,
-  cartItems,
-  setCartItems,
   cachedCartItem,
   setCachedCartItem
 ) => {
   let selectedProductIndex = -1;
-  for (let i = 0; i < cartItems.length; i++) {
-    if (selectedProduct.id === cartItems[i].id) {
+  for (let i = 0; i < cachedCartItem.length; i++) {
+    if (selectedProduct.id === cachedCartItem[i].id) {
       selectedProductIndex = i;
       break;
     }
   }
   if (selectedProductIndex != -1) {
-    if (cartItems[selectedProductIndex].quantity === 1) {
-      removeFromCart(
-        selectedProduct,
-        cartItems,
-        setCartItems,
-        cachedCartItem,
-        setCachedCartItem
-      );
+    if (cachedCartItem[selectedProductIndex].quantity === 1) {
+      removeFromCart(selectedProduct, cachedCartItem, setCachedCartItem);
+      if (localStorage.getItem("e-comm-auth")) {
+        await axios.delete(
+          REMOVE_FROM_CART_API + `?prodId=${selectedProduct.id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("e-comm-auth")).token
+              }`,
+            },
+          }
+        );
+      }
       return;
     }
-    cartItems[selectedProductIndex].quantity -= 1;
     cachedCartItem[selectedProductIndex].quantity -= 1;
-    setCartItems([...cartItems]);
     setCachedCartItem([...cachedCartItem]);
+    if (localStorage.getItem("e-comm-auth")) {
+      await axios.get(
+        DECREMENT_QUANTITY_CART_API + `?prodId=${selectedProduct.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("e-comm-auth")).token
+            }`,
+          },
+        }
+      );
+    }
   }
 };
 
-export const removeFromCart = (
+export const removeFromCart = async (
   selectedProduct,
-  cartItems,
-  setCartItems,
   cachedCartItem,
   setCachedCartItem
 ) => {
-  let newCartItems = cartItems.filter((item) => item.id != selectedProduct.id);
   let newCachedCartItems = cachedCartItem.filter(
     (item) => item.id != selectedProduct.id
   );
-  setCartItems(newCartItems);
   setCachedCartItem(newCachedCartItems);
+  if (localStorage.getItem("e-comm-auth")) {
+    await axios.delete(REMOVE_FROM_CART_API + `?prodId=${selectedProduct.id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("e-comm-auth")).token
+        }`,
+      },
+    });
+  }
 };
 
 export const calculateProductSubtotal = (price, discount, quantity) => {

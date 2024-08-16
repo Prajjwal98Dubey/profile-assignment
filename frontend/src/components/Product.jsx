@@ -2,14 +2,12 @@
 
 import { useContext } from "react";
 import { discountedPrice } from "../helpers/discountedPrice";
-import { CartContext } from "../contexts/CartContext";
 import { handleAddToCart } from "../helpers/CartMethods";
 import { CachedCartContext } from "../contexts/CachedCartContext";
 import { toast } from "react-toastify";
 
 /// [{id:1,qunatity:1}]
 const Product = ({ prod }) => {
-  const { cartItems, setCartItems } = useContext(CartContext);
   const { cachedCartItem, setCachedCartItem } = useContext(CachedCartContext);
   const toastAddToCart = () => {
     toast(`${prod.title} added !!!`, {
@@ -48,8 +46,6 @@ const Product = ({ prod }) => {
           onClick={() => {
             handleAddToCart(
               prod,
-              cartItems,
-              setCartItems,
               cachedCartItem,
               setCachedCartItem
             );

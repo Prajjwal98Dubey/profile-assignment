@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { discountedPrice } from "../helpers/discountedPrice";
 import { TRASH_ICON } from "../assets/icons";
-import { CartContext } from "../contexts/CartContext";
 import {
   calculateProductSubtotal,
   handleAddToCart,
@@ -15,7 +14,6 @@ import { toast } from "react-toastify";
 const CartProduct = ({ itemQuantity,cachedItem }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [item, setItem] = useState({});
-  const { cartItems, setCartItems } = useContext(CartContext);
   const { cachedCartItem, setCachedCartItem } = useContext(CachedCartContext);
   useEffect(() => {
     itemDetail();
@@ -72,8 +70,6 @@ const CartProduct = ({ itemQuantity,cachedItem }) => {
                   onClick={() => {
                     removeFromCart(
                       item,
-                      cartItems,
-                      setCartItems,
                       cachedCartItem,
                       setCachedCartItem
                     );
@@ -97,8 +93,6 @@ const CartProduct = ({ itemQuantity,cachedItem }) => {
                     onClick={() =>
                       handleDecrementQuantity(
                         item,
-                        cartItems,
-                        setCartItems,
                         cachedCartItem,
                         setCachedCartItem
                       )
@@ -116,8 +110,6 @@ const CartProduct = ({ itemQuantity,cachedItem }) => {
                     onClick={() =>
                       handleAddToCart(
                         item,
-                        cartItems,
-                        setCartItems,
                         cachedCartItem,
                         setCachedCartItem
                       )
